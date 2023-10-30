@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://kit.fontawesome.com/6ed790b2ab.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <title>Spotify</title>
+</head>
+<body>
+  <!-- seccion de musica -->
+  <section class="playlist" id="music-display"></section>
+  <!-- seccion para artistas -->
+  <section class="playlist off"  id="artist-display"></section>
+  <!-- seccion para el usuario -->
+  <section id="user-display" class="playlist off"></section>
+  <!-- albums-->
+  <section class="playlist off"  id="album-display"></section>
+  <!-- seccion para las canciones -->
+  <section id="songs-display" class="playlist songs off"></section>
+  <!-- añadir a playlist modal -->
+  <div class="addmodal playlist off" id="modal">
+    <select name="" id="" class="selected">
+      <option value="play" style="font-size: 14px;">Playlist</option>
+    </select>
+    <button class="save-playlist" onclick="saveToPlaylist()" id="save-button">Guardar</button>
+  </div>
+  <!-- navegacion -->
+  <div class="playlist-footer">
+    <div class="playlist-nav"> 
+      <div>
+        <i class="fa-brands fa-itunes-note pressed" onclick="displayPlaylist()" id="music-icon"></i>
+        <h6 id="playlist-container" class="pressed" style="font-size: 17px;">playlist</h6>
+      </div>
+      <div>
+        <i class="fa-solid fa-headphones-simple" id="artist-icon" onclick="displayArtist()"></i>
+        <h6 id="artist-container" style="font-size: 17px;">artistas</h6>
+      </div>   
+      <div>
+        <i class="fa-regular fa-user" id="user-icon" onclick="displayUser()"></i>
+        <h6 id="user-container" style="font-size: 17px;">usuario</h6>
+      </div>
+    </div>
+  </div>
+  <!-- los cover van en el apartado de artistas
+       en usuarios van las fotos de gokus
+   -->
+   <script src="assets/js/controller.js"></script>
+</body>
+</html>
