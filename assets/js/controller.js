@@ -7,10 +7,25 @@ const musicIcon = document.getElementById('music-icon');
 const userIcon = document.getElementById('user-icon');
 const songsDisplay = document.getElementById('songs-display');
 const modal = document.getElementById('modal');
-let users = [{idUsuario: 1, nombre: 'goku', imagen: '/assets/img/users/goku.jpg'}];
+
+
+let userName = 'goku';
+let selected;
+let userId = 1;
+let users = [{
+    idUsuario: 1, 
+    nombre: 'goku', 
+    imagen: '/assets/img/users/goku.jpg'
+  }, 
+  {
+    idUsuario: 2,
+    nombre: 'picoro',
+    imagen: '/assets/img/users/picoro.jpg'
+  }
+];
 let artist = [
   {
-    idArtista: 1,
+    idUsuario: 1,
     nombre: 'Coldplay',
     imagen: '/assets/img/covers/artist.jpg',
     albumes: [
@@ -25,121 +40,108 @@ let artist = [
         ]
       }
     ]
+  },
+  {
+    idUsuario: 2,
+    nombre: 'SIA',
+    imagen: '/assets/img/covers/cover8.jpg',
+    albumes: [
+      {
+        nombreAlbum: 'Music of the spheres',
+        caratula: '/assets/img/covers/cover5.jpg',
+        canciones: [
+          {
+            nombre: 'Coloratura',
+            duracion: '10:00',
+          }
+        ]
+      },
+      {
+        nombreAlbum: 'Free',
+        caratula: '/assets/img/covers/cover8.jpg',
+        canciones: [
+          {
+            nombre: 'Free like a bird',
+            duracion: '03:50',
+          }
+        ]
+      }
+    ]
+  } 
+];
+
+let playlist = [
+  {
+    idUsuario: 1,
+    playlists: [
+      {
+        titulo: 'Canciones favoritas', 
+        caratula: 'assets/img/covers/cover10.jpg',
+        canciones: [
+          {
+            nombre: 'Coloratura',
+            artista: 'Coldplay',
+            album: 'Music of the spheres',
+            duracion: '10:00',
+          }
+        ]
+      },
+    ] 
+  },
+  {
+    idUsuario: 2,
+    playlists: [
+      {
+        titulo: 'Canciones para estudiar', 
+        caratula: 'assets/img/covers/cover4.jpg',
+        canciones: [
+          {
+            nombre: 'Raining',
+            artista: 'Lofi',
+            album: 'chill bits',
+            duracion: '4:00',
+          }
+        ]
+      },
+    ] 
   }
 ];
 
-let playlist = [{
-  idUsuario: 1,
-  playlists: [
-    {
-      titulo: 'Canciones favoritas', 
-      caratula: 'imagen.jpg',
-      canciones: [
-        {
-          nombre: 'Coloratura',
-          artista: 'Coldplay',
-          album: 'Music of the spheres',
-          duracion: '10:00',
-        }
-      ]
-    },
-  ] 
-}];
+let userLocalStorage = window.localStorage;
+let artistLocalStorage = window.localStorage;
+let playlistLocalStorage = window.localStorage;
 
-const displayPlaylist = () => {
-  musicDisplay.innerHTML = '';
-  playlist.forEach(list => {
-    musicDisplay.innerHTML += `
-    <div class="playlist-display music">
-      <div class="playlist-cover"></div>
-      <div class="playlist-name">
-        <h2 class="playlist-title">${list.playlists[0].titulo}</h4>
-        <h4 class="playlist-user">${list.playlists[0].canciones[0].artista}-${users[0].nombre}</h6>
-      </div>
-    </div>
-    `
-  })
-
-
-  musicDisplay.classList.remove('off');
-  musicIcon.classList.add('pressed');
-  document.getElementById('playlist-container').classList.add('pressed');
-  document.getElementById('artist-container').classList.remove('pressed');
-  document.getElementById('user-container').classList.remove('pressed');
-  artistDisplay.classList.add('off');
-  artistIcon.classList.remove('pressed');
-  userIcon.classList.remove('pressed');
-  userDisplay.classList.add('off');
-  albumDisplay.classList.add('off');
-  songsDisplay.classList.add('off');
+if(userLocalStorage.getItem('u') == null) {
+  userLocalStorage.setItem('u', JSON.stringify(users));
+} else {
+  users = JSON.parse(userLocalStorage.getItem('u'));
 }
 
-const displayArtist = () => {
-  artistDisplay.innerHTML = '';
-  artist.forEach(artists => {
-    artistDisplay.innerHTML += `
-    <div class="playlist-display artist off" onclick="displayAlbum()">
-    <img class="playlist-cover" src="${artists.imagen}" alt="${artists.nombre}">
-    <div class="playlist-name">
-      <h2 class="playlist-title">${artists.nombre}</h4>
-      <h4 class="playlist-user">artista</h6>
-    </div>
-  </div>
-    `
-  })
-
-  musicDisplay.classList.add('off');
-  musicIcon.classList.remove('pressed');
-  document.getElementById('playlist-container').classList.remove('pressed');
-  document.getElementById('user-container').classList.remove('pressed');
-  artistDisplay.classList.remove('off');
-  artistIcon.classList.add('pressed');
-  document.getElementById('artist-container').classList.add('pressed');
-  userIcon.classList.remove('pressed');
-  userDisplay.classList.add('off');
-  albumDisplay.classList.add('off');
-  songsDisplay.classList.add('off');
+if(artistLocalStorage.getItem('art') == null) {
+  artistLocalStorage.setItem('art', JSON.stringify(artist));
+} else {
+  artist = JSON.parse(artistLocalStorage.getItem('art'));
 }
 
-const displayUser = () => {
-  userDisplay.innerHTML = '';
-  users.forEach(user => {
-    userDisplay.innerHTML += `
-    <div class="playlist-display user">
-    <img class="playlist-cover-user" src="${user.imagen}" alt="${user.nombre}">
-    <div class="playlist-name">
-      <h2 class="playlist-title">${user.nombre}</h4>
-      <hr class="line">
-    </div>
-  </div> 
-    `
-  })
-
-    musicDisplay.classList.add('off');
-    musicIcon.classList.remove('pressed');
-    artistDisplay.classList.add('off');
-    artistIcon.classList.remove('pressed');
-    userIcon.classList.add('pressed');
-    document.getElementById('user-container').classList.add('pressed');
-    userDisplay.classList.remove('off');
-    albumDisplay.classList.add('off');
-    songsDisplay.classList.add('off');
-    document.getElementById('playlist-container').classList.remove('pressed');
-    document.getElementById('artist-container').classList.remove('pressed');
-    document.getElementById('user-container').classList.add('pressed');
+if(playlistLocalStorage.getItem('pl') == null) {
+  playlistLocalStorage.setItem('pl', JSON.stringify(playlist));
+} else {
+  playlist = JSON.parse(playlistLocalStorage.getItem('pl'));
 }
 
 const displayAlbum = () => {
+  const album = artist.find(user => user.idUsuario == userId);
+  let albumes = album.albumes;
   albumDisplay.innerHTML = '';
-  artist.forEach(album => {
+  albumes.forEach((albumUser, index) => {
     albumDisplay.innerHTML += `
-    <div class="playlist-display artist off" onclick="displaySongs()">
-    <img class="playlist-cover" src="${album.albumes[0].caratula}" alt="${album.albumes[0].nombreAlbum}">
+    <div class="playlist-display artist off" onclick="displaySongs(${index})">
+    <img class="playlist-cover" src="${albumUser.caratula}" alt="${albumUser.nombreAlbum}">
     <div class="playlist-name">
-      <h2 class="playlist-title">${album.albumes[0].nombreAlbum}</h4>
+      <h2 class="playlist-title">${albumUser.nombreAlbum}</h4>
       <h4 class="playlist-user">${album.nombre}</h6>
     </div>
-  </div>
+    </div>
     `
   })
 
@@ -152,30 +154,33 @@ const displayAlbum = () => {
 
 
 
-const displaySongs = () => {
+const displaySongs = (index) => {
+  const userSongs = artist.find(us => us.idUsuario == userId);
+  const albums = userSongs.albumes;
+  const selectedAlbum = albums[index];
+  const songs = selectedAlbum.canciones;
   songsDisplay.innerHTML = '';
-  artist.forEach(item => {
+  songs.forEach((item) => {
     songsDisplay.innerHTML += `
     <div class="playlist-display-song">
       <div class="playlist-name">
         <div class="content">
           <i class="fa-brands fa-itunes-note music-s"></i>
           <div>
-            <h2 class="playlist-title s">${item.albumes[0].canciones[0].nombre}</h2>
-            <h4 class="song-s">${item.nombre}</h4>
+            <h2 class="playlist-title s">${item.nombre}</h2>
+            <h4 class="song-s">${userSongs.nombre}</h4>
           </div>
         </div>
      </div>
     <div>
-      <h4 class="timing">${item.albumes[0].canciones[0].duracion}</h4>
+      <h4 class="timing">${item.duracion}</h4>
     </div>
   </div>
     `
-  
   songsDisplay.innerHTML += `
   <div class="play-container">
   <div class="play-container-content">
-    <img class="play-container-img" src="${item.albumes[0].caratula}" alt="${item.albumes[0].nombreAlbum}">
+    <img class="play-container-img" src="${selectedAlbum.caratula}" alt="${selectedAlbum.nombreAlbum }">
     <div class="play-container-info">
       <div class="play-container-names">
         <h6>Canción</h6>
@@ -204,4 +209,100 @@ const addToPlaylist = () => {
 
 const saveToPlaylist = () => {
   modal.classList.add('off');
+}
+
+
+const display = (tag) => {
+  const artistCont = document.getElementById('artist-container')
+  const playlistCont = document.getElementById('playlist-container')
+  const userCont = document.getElementById('user-container')
+
+  if(tag == artistIcon) {
+    artistDisplay.innerHTML = '';
+    artist.forEach(artists => {
+      if(artists.idUsuario == userId) {
+        artistDisplay.innerHTML += `
+        <div class="playlist-display artist off" onclick="displayAlbum()">
+        <img class="playlist-cover" src="${artists.imagen}" alt="${artists.nombre}">
+        <div class="playlist-name">
+          <h2 class="playlist-title">${artists.nombre}</h4>
+          <h4 class="playlist-user">artista</h6>
+        </div>
+      </div>
+        `
+      }
+    })
+    // display
+    artistDisplay.classList.remove('off');
+    artistIcon.classList.add('pressed');
+    artistCont.classList.add('pressed');
+    // hide playlist
+    musicDisplay.classList.add('off');
+    musicIcon.classList.remove('pressed');
+    playlistCont.classList.remove('pressed');
+    // hide user
+    userDisplay.classList.add('off');
+    userIcon.classList.remove('pressed');
+    userCont.classList.remove('pressed');
+  } else if(tag == musicIcon) {
+
+    const userPlaylist = playlist.find(user => user.idUsuario == userId);
+    const playlists = userPlaylist.playlists; 
+    musicDisplay.innerHTML = '';
+    playlists.forEach((list) => {
+      musicDisplay.innerHTML += `
+      <div class="playlist-display music">
+        <img class="playlist-cover" src="${list.caratula}">
+        <div class="playlist-name">
+          <h2 class="playlist-title">${list.titulo}</h4>
+          <h4 class="playlist-user">${list.canciones[0].artista}-${userName}</h6>
+        </div>
+      </div>
+      `
+    })
+    // display
+    musicDisplay.classList.remove('off');
+    musicIcon.classList.add('pressed');
+    playlistCont.classList.add('pressed');
+    // hide user
+    userDisplay.classList.add('off');
+    userIcon.classList.remove('pressed');
+    userCont.classList.remove('pressed');
+    // hide artists
+    artistDisplay.classList.add('off');
+    artistIcon.classList.remove('pressed');
+    artistCont.classList.remove('pressed');
+  } else {
+    userDisplay.innerHTML = '';
+    users.forEach((user, index) => {
+      userDisplay.innerHTML += `
+      <div class="playlist-display user" onclick="selectUser(${index})">
+      <img class="playlist-cover-user" src="${user.imagen}" alt="${user.nombre}">
+      <div class="playlist-name">
+        <h2 class="playlist-title">${user.nombre}</h4>
+        <hr class="line">
+      </div>
+    </div> 
+      `
+    })
+    // display
+    userDisplay.classList.remove('off');
+    userIcon.classList.add('pressed');
+    userCont.classList.add('pressed');
+    // hide artists
+    artistDisplay.classList.add('off');
+    artistIcon.classList.remove('pressed');
+    artistCont.classList.remove('pressed'); 
+    // hide playlist
+    musicDisplay.classList.add('off');
+    musicIcon.classList.remove('pressed');
+    playlistCont.classList.remove('pressed');
+  }
+
+}
+
+const selectUser = (id) => {
+  userName = users[id].nombre;
+  userId = users[id].idUsuario;
+  console.log(users[id].nombre);
 }
